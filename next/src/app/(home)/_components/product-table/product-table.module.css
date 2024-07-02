@@ -1,0 +1,87 @@
+.productTable {
+  width: 100%;
+  border-collapse: collapse;
+  padding: 10px;
+}
+
+.productTable th,
+.productTable td {
+  padding: 12px 10px;
+  text-align: left;
+  font-weight: normal;
+  font-size: 0.85rem;
+  width: 16.66%;
+}
+
+.productTable th {
+  font-size: 1rem;
+}
+
+.productTable tr:nth-child(even) {
+  background-color: rgba(15, 23, 42, 0.03);
+}
+
+.productTable td:last-child {
+  text-align: right;
+}
+
+.productTable tr td:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+.productTable tr td:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+.quantityColumn {
+  text-align: center !important;
+}
+
+.quantityCell {
+  text-align: center !important;
+}
+
+.truncate {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.noImageText {
+  font-size: 0.8rem;
+  color: #666;
+  text-align: center;
+}
+
+.actionButton {
+  padding: 6px 6px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.actionButton:hover {
+  background-color: #c9cfd8;
+}
+
+.imageContainer {
+  min-width: 56px !important;
+  min-height: 56px;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3px !important;
+  margin: 12px;
+  border-radius: 4px !important;
+}
+
+.productImage {
+  object-fit: cover;
+  border-radius: 2px !important;
+
+
+}

@@ -1,0 +1,15 @@
+{
+	"name": "test",
+	"version": "1.0.0",
+	"description": "",
+	"scripts": {
+		"init": "npm i && cd next && npm install && cd ../react && npm install && cd ../server && npm install",
+		"react": "concurrently \"cd server && npm run start\" \"cd react && npm run dev\"",
+		"next": "concurrently \"cd server && npm run start\" \"cd next && npm run dev\""
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"concurrently": "^8.2.2"
+	}
+}
