@@ -1,0 +1,35 @@
+.searchBarContainer {
+  @apply flex items-center justify-between mb-10;
+}
+
+.inputContainer {
+  @apply flex items-center;
+}
+
+.input {
+  @apply w-[240px] mr-4;
+}
+
+.viewSwitchContainer {
+  @apply flex items-center;
+}
+
+.viewSwitchButton {
+  @apply p-2;
+}
+
+.viewSwitchButtonTableActive {
+  @apply bg-gray-400 rounded-l-md;
+}
+
+.viewSwitchButtonTableInactive {
+  @apply bg-gray-200 rounded-l-md;
+}
+
+.viewSwitchButtonCardsActive {
+  @apply bg-gray-400 rounded-r-md;
+}
+
+.viewSwitchButtonCardsInactive {
+  @apply bg-gray-200 rounded-r-md;
+}

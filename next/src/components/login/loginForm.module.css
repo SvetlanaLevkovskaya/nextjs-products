@@ -1,0 +1,35 @@
+.overlay {
+  @apply flex justify-center items-center min-h-screen bg-slate-100 text-zinc-900;
+}
+
+.bgLayer {
+  @apply absolute inset-0 flex flex-col;
+}
+
+.bgTop {
+  @apply h-2/5 bg-slate-800;
+}
+
+.formContainer {
+  @apply relative flex justify-center items-center min-h-screen;
+}
+
+.form {
+  @apply bg-slate-200 px-8 py-7 rounded-[10px] shadow-md w-[360px] flex flex-col gap-6;
+}
+
+.formGroup {
+  @apply flex flex-col gap-1;
+}
+
+.inputGroup {
+  @apply flex flex-col gap-9 pt-8 pb-[10px];
+}
+
+.authError {
+  @apply text-sm text-rose-700;
+}
+
+.centeredButton {
+  @apply block mx-auto;
+}

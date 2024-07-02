@@ -1,0 +1,35 @@
+.sidebarContainer {
+  @apply h-screen w-56 bg-slate-100 flex flex-col;
+}
+
+.sidebarHeader {
+  @apply flex items-center gap-1 justify-center py-3 text-slate-100 mb-6 bg-gray-800 rounded-br-2xl;
+}
+
+.sidebarList {
+  @apply p-[10px] flex flex-col gap-4;
+}
+
+.sidebarItem {
+  @apply pr-1 relative flex justify-between items-center text-slate-800 font-medium text-xl;
+}
+
+.sidebarFooter {
+  @apply mt-auto p-5 text-slate-900;
+}
+
+.userInfo {
+  @apply flex space-x-2 mb-4;
+}
+
+.roleBadge {
+  @apply bg-gray-300 px-2 py-1 rounded-3xl text-sm;
+}
+
+.userActions {
+  @apply w-full flex justify-between;
+}
+
+.logoutButton {
+  @apply bg-gray-100 px-1 py-0 hover:bg-gray-100;
+}
