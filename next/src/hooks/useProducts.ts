@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import { useDebounce } from '@/hooks/useDebounce'
 
-import { apiClientService } from '@/services/client-api'
+import { apiClientService } from '@/services/clientApi'
 
 import { useAuth } from '@/providers/auth-provider'
 import { Product } from '@/types'

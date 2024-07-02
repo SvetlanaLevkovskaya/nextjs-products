@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import axios from 'axios'
 
-import { apiClientService } from '@/services/client-api'
+import { apiClientService } from '@/services/clientApi'
 
 import { useAuth } from '@/providers/auth-provider'
 import { Manufacturer } from '@/types'

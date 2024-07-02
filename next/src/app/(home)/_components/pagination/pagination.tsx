@@ -1,6 +1,10 @@
 import { FC } from 'react'
 
+import { Button } from '@/components/ui/button/button'
+
 import styles from './pagination.module.css'
+
+import { getPaginationItems } from '@/lib/utils/getPaginationItems'
 
 interface PaginationProps {
   page: number
@@ -10,31 +14,6 @@ interface PaginationProps {
   handlePageClick: (pageNumber: number) => void
 }
 
-const generatePaginationItems = (currentPage: number, totalPages: number, delta: number = 2) => {
-  const range = []
-  for (
-    let i = Math.max(2, currentPage - delta);
-    i <= Math.min(totalPages - 1, currentPage + delta);
-    i++
-  ) {
-    range.push(i)
-  }
-
-  if (currentPage - delta > 2) {
-    range.unshift('...')
-  }
-  if (currentPage + delta < totalPages - 1) {
-    range.push('...')
-  }
-
-  range.unshift(1)
-  if (totalPages > 1) {
-    range.push(totalPages)
-  }
-
-  return range
-}
-
 export const Pagination: FC<PaginationProps> = ({
   page,
   totalPages,
@@ -42,35 +21,32 @@ export const Pagination: FC<PaginationProps> = ({
   handleNextPage,
   handlePageClick,
 }) => {
-  const paginationItems = generatePaginationItems(page, totalPages)
+  const paginationItems = getPaginationItems(page, totalPages)
 
   return (
     <div className={styles.paginationContainer}>
-      <button className={styles.paginationButton} onClick={handlePreviousPage} disabled={page <= 1}>
+      <Button variant="pagination" onClick={handlePreviousPage} disabled={page <= 1}>
         &laquo;
-      </button>
+      </Button>
       {paginationItems.map((item, index) =>
         typeof item === 'number' ? (
-          <button
+          <Button
             key={index}
-            className={`${styles.paginationButton} ${page === item ? styles.activePage : ''}`}
+            variant="pagination"
+            className={`${page === item ? styles.activePage : ''}`}
             onClick={() => handlePageClick(item)}
           >
             {item}
-          </button>
+          </Button>
         ) : (
           <span key={index} className={styles.ellipsis}>
             {item}
           </span>
         )
       )}
-      <button
-        className={styles.paginationButton}
-        onClick={handleNextPage}
-        disabled={page >= totalPages}
-      >
+      <Button variant="pagination" onClick={handleNextPage} disabled={page >= totalPages}>
         &raquo;
-      </button>
+      </Button>
     </div>
   )
 }

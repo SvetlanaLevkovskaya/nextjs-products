@@ -2,7 +2,7 @@
 
 import { type FC, type PropsWithChildren } from 'react'
 
-import Sidebar from '@/components/layouts/components/sidebar'
+import { Sidebar } from '@/components/layouts/components/sidebar'
 
 export const NavLayout: FC<PropsWithChildren> = ({ children }) => {
   return (

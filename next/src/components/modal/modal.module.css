@@ -1,85 +1,32 @@
 .overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @apply fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center;
 }
 
 .modal {
-  background-color: white;
-  padding: 10px 16px;
-  border-radius: 8px;
-  width: 400px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  @apply bg-white p-4 rounded-lg w-96 shadow-lg;
 }
 
 .form {
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
+  @apply flex flex-col mt-5;
 }
 
 .formGroup {
-  margin-bottom: 1rem;
-}
-
-/*label {
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}*/
-
-.actions {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.saveButton {
-  padding: 0.5rem 1rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.saveButton:hover {
-  background-color: #0056b3;
-}
-
-.hiddenInput {
-  display: none;
+  @apply mb-4;
 }
 
 .imagePreviewContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  @apply flex items-center justify-between gap-2.5;
 }
 
 .imagePreview {
-  max-width: 56px;
-  max-height: 56px;
-  cursor: pointer;
-  border-radius: 4px;
+  @apply max-w-14 max-h-14 cursor-pointer rounded-md;
 }
 
 .fileName {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  @apply flex items-center gap-1.5;
 }
 
-.removeImageButton {
-  background: none;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
+.actions {
+  @apply mt-4 flex justify-end gap-2.5;
 }
+

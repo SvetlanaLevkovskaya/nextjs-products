@@ -3,6 +3,9 @@ import { createPortal } from 'react-dom'
 
 import Image from 'next/image'
 
+import { Button } from '@/components/ui/button/button'
+import { Input } from '@/components/ui/input/input'
+
 import styles from './modal.module.css'
 
 import { Manufacturer, Product } from '@/types'
@@ -72,39 +75,39 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
         <h2>Редактирование продукта</h2>
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formGroup}>
-            <label htmlFor="name">Название</label>
-            <input
+            <Input
               type="text"
+              label="Название"
               id="name"
               name="name"
               value={editedProduct.name}
               onChange={handleChange}
-              className="p-text bg-[#C9CFD8] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#C9CFD8] focus:bg-transparent outline-none"
+              className="w-full"
               required
             />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="quantity">Количество</label>
-            <input
+            <Input
               type="number"
+              label="Количество"
               id="quantity"
               name="quantity"
               value={editedProduct.quantity}
               onChange={handleChange}
-              className="p-text bg-[#C9CFD8] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#C9CFD8] focus:bg-transparent outline-none"
+              className="w-full"
               required
             />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="price">Цена</label>
-            <input
+            <Input
               type="number"
+              label="Цена"
               id="price"
               name="price"
               step="0.01"
               value={editedProduct.price}
               onChange={handleChange}
-              className="p-text bg-[#C9CFD8] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#C9CFD8] focus:bg-transparent outline-none"
+              className="w-full"
               required
             />
           </div>
@@ -127,13 +130,13 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
             </select>
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="photo">Фото</label>
-            <input
+            <Input
               type="file"
+              label="Фото"
               id="photo"
               name="photo"
               onChange={handleFileChange}
-              className={styles.hiddenInput}
+              className="hidden"
             />
             {imagePreview && (
               <div className={styles.imagePreviewContainer}>
@@ -147,27 +150,16 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
                 />
                 <span className={styles.fileName}>
                   {selectedFile?.name || 'image.png'}
-                  <button
-                    type="button"
-                    className={styles.removeImageButton}
-                    onClick={handleRemoveImage}
-                  >
+                  <Button variant="remove" onClick={handleRemoveImage}>
                     &#x2716;
-                  </button>
+                  </Button>
                 </span>
               </div>
             )}
           </div>
           <div className={styles.actions}>
-            <button className="px-6 py-2 rounded-md font-medium text-base transition duration-200 bg-slate-700 text-white hover:bg-slate-600">
-              Отменить
-            </button>
-            <button
-              type="submit"
-              className="px-6 py-2 rounded-md font-medium text-base transition duration-200 bg-slate-300 hover:bg-slate-400"
-            >
-              Сохранить
-            </button>
+            <Button variant="secondary">Отменить</Button>
+            <Button type="submit">Сохранить</Button>
           </div>
         </form>
       </div>

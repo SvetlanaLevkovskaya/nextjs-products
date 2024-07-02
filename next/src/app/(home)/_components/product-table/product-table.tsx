@@ -2,6 +2,7 @@ import { FC } from 'react'
 
 import Image from 'next/image'
 
+import { Button } from '@/components/ui/button/button'
 import { Delete, Edit } from '@/components/ui/icons'
 
 import styles from './product-table.module.css'
@@ -58,15 +59,12 @@ export const ProductTable: FC<ProductTableProps> = ({
             </td>
             <td>{formatCurrency(product.price)}</td>
             <td>
-              <button onClick={() => handleEditProduct(product.id)} className={styles.actionButton}>
+              <Button variant="action" onClick={() => handleEditProduct(product.id)}>
                 <Edit />
-              </button>
-              <button
-                onClick={() => handleDeleteProduct(product.id)}
-                className={styles.actionButton}
-              >
+              </Button>
+              <Button variant="action" onClick={() => handleDeleteProduct(product.id)}>
                 <Delete />
-              </button>
+              </Button>
             </td>
           </tr>
         ))}

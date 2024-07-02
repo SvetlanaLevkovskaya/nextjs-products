@@ -30,3 +30,8 @@ export interface UserData {
   user: User
   roles: Role[]
 }
+
+export type FormData = {
+  email: string
+  password: string
+}

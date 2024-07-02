@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import { LoginForm } from '@/components/login/login-form'
+import { LoginForm } from '@/components/login/loginForm'
 
 export const metadata: Metadata = {
   title: 'Авторизация',
