@@ -5,25 +5,7 @@ import axios from 'axios'
 import { apiClientService } from '@/services/client-api'
 
 import { useAuth } from '@/providers/auth-provider'
-
-interface Role {
-  id: number
-  name: string
-  pages: string[]
-}
-
-interface User {
-  id: number
-  name: string
-  email: string
-  password: string
-  roles: number[]
-}
-
-interface UserData {
-  user: User
-  roles: Role[]
-}
+import { UserData } from '@/types'
 
 const useFetchUser = () => {
   const { authToken } = useAuth()
