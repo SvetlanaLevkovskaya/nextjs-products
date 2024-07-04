@@ -8,23 +8,27 @@ import { Input } from '@/components/ui/input/input'
 
 import styles from './modal.module.css'
 
-import { Manufacturer, Product } from '@/types'
+import { Manufacturer, NewProduct, Product } from '@/types'
 
 interface EditProductModalProps {
-  product: Product
-  manufacturers: Manufacturer[] | undefined
-  onSave: (updatedProduct: Product) => void
+  product: Product | NewProduct
+  manufacturers: Manufacturer[]
+  onSave: (product: Product | NewProduct) => void
   onClose: () => void
 }
 
 export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSave, onClose }) => {
-  const [editedProduct, setEditedProduct] = useState<Product>({ ...product })
+  const [editedProduct, setEditedProduct] = useState<Product | NewProduct>({
+    ...product,
+  })
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [imagePreview, setImagePreview] = useState<string | null>(product.photoUrl || null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
 
   useEffect(() => {
     setEditedProduct({ ...product })
-    setImagePreview(product.photoUrl || null)
+    if ('photoUrl' in product) {
+      setImagePreview(product?.photoUrl || product?.image || null)
+    }
     setSelectedFile(null)
   }, [product])
 
@@ -54,10 +58,13 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    onSave({
+
+    const productToSave = {
       ...editedProduct,
-      photoUrl: imagePreview ?? '',
-    })
+      ...(editedProduct.id ? { photoUrl: imagePreview ?? '' } : { image: imagePreview ?? '' }),
+    }
+
+    onSave(productToSave)
   }
 
   const handleImageClick = () => {
@@ -72,7 +79,7 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
   return createPortal(
     <div className={styles.overlay}>
       <div className={styles.modal}>
-        <h2>Редактирование продукта</h2>
+        <h2>{product?.id ? 'Редактирование продукта' : 'Создание товара'}</h2>
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formGroup}>
             <Input
@@ -80,7 +87,7 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
               label="Название"
               id="name"
               name="name"
-              value={editedProduct.name}
+              value={editedProduct.name || ''}
               onChange={handleChange}
               className="w-full"
               required
@@ -92,7 +99,7 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
               label="Количество"
               id="quantity"
               name="quantity"
-              value={editedProduct.quantity}
+              value={editedProduct.quantity?.toString() || ''}
               onChange={handleChange}
               className="w-full"
               required
@@ -105,7 +112,7 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
               id="price"
               name="price"
               step="0.01"
-              value={editedProduct.price}
+              value={editedProduct.price?.toString() || ''}
               onChange={handleChange}
               className="w-full"
               required
@@ -116,7 +123,7 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
             <select
               id="manufacturerId"
               name="manufacturerId"
-              value={editedProduct.manufacturerId}
+              value={editedProduct.manufacturerId?.toString() || ''}
               onChange={handleChange}
               className="p-text bg-[#C9CFD8] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#C9CFD8] focus:bg-transparent outline-none"
               required
@@ -137,6 +144,7 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
               name="photo"
               onChange={handleFileChange}
               className="hidden"
+              required
             />
             {imagePreview && (
               <div className={styles.imagePreviewContainer}>
@@ -158,7 +166,9 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
             )}
           </div>
           <div className={styles.actions}>
-            <Button variant="secondary">Отменить</Button>
+            <Button variant="secondary" onClick={onClose}>
+              Отменить
+            </Button>
             <Button type="submit">Сохранить</Button>
           </div>
         </form>

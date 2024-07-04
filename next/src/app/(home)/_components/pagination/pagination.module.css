@@ -1,5 +1,5 @@
 .paginationContainer {
-  @apply mt-12 flex justify-center items-center gap-2;
+  @apply mt-8 flex justify-center items-center gap-2;
 }
 
 .activePage {

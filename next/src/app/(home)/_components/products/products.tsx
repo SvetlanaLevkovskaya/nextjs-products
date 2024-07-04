@@ -14,7 +14,7 @@ import { apiClientService } from '@/services/clientApi'
 import { Pagination, ProductCard, ProductTable, SearchBar } from '@/app/(home)/_components'
 import { calculateLimitPerPage } from '@/lib/utils/calculateLimitPerPage'
 import { useAuth } from '@/providers/auth-provider'
-import { Manufacturer, Product } from '@/types'
+import { Manufacturer, NewProduct, Product } from '@/types'
 
 export const Products = () => {
   const { authToken } = useAuth()
@@ -22,6 +22,7 @@ export const Products = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table')
   const [editProduct, setEditProduct] = useState<Product | null>(null)
+  const [newProduct, setNewProduct] = useState<NewProduct | null>(null)
   const [page, setPage] = useState(1)
   const windowSize = useWindowSize()
 
@@ -32,18 +33,20 @@ export const Products = () => {
     error: productsError,
     setProducts,
   } = useProducts(limit, page, searchQuery)
+
   const {
     manufacturers,
     loading: loadingManufacturers,
     error: manufacturersError,
   } = useManufacturers()
+
   useEffect(() => {
     setLimit(calculateLimitPerPage(windowSize.width))
   }, [windowSize.width])
 
   const handleEditProduct = (productId: number) => {
     const product = products.find((p) => p.id === productId)
-    if (product) setEditProduct(product)
+    if (product) setEditProduct(product as Product)
   }
 
   const handleDeleteProduct = async (productId: number) => {
@@ -55,13 +58,22 @@ export const Products = () => {
     }
   }
 
-  const handleSaveProduct = async (updatedProduct: Product) => {
+  const handleSaveProduct = async (product: Product | NewProduct) => {
     try {
-      await apiClientService.updateProduct(updatedProduct.id, updatedProduct, authToken)
-      setProducts((prevProducts) =>
-        prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-      )
+      if ('id' in product && product.id) {
+        await apiClientService.updateProduct(product.id, product as Product, authToken)
+        setProducts((prevProducts) =>
+          prevProducts.map((p) => (p.id === product.id ? (product as Product) : p))
+        )
+      } else {
+        const createdProduct = await apiClientService.createProduct(
+          product as NewProduct,
+          authToken
+        )
+        setProducts((prevProducts) => [...prevProducts, createdProduct].slice(0, limit))
+      }
       setEditProduct(null)
+      setNewProduct(null)
     } catch (error) {
       console.error('Error saving product:', error)
     }
@@ -72,7 +84,14 @@ export const Products = () => {
     setPage(1)
   }
 
-  const handleAddProduct = () => console.log('Добавление нового продукта')
+  const handleAddProduct = () =>
+    setNewProduct({
+      name: '',
+      quantity: 0,
+      price: 0,
+      manufacturerId: 0,
+      image: '',
+    })
 
   const handleSwitchView = (view: 'table' | 'cards') => setViewMode(view)
 
@@ -104,7 +123,7 @@ export const Products = () => {
           />
         )
       ) : (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+        <div className="grid grid-cols-4 gap-4">
           {loadingProducts || loadingManufacturers ? (
             <Spinner />
           ) : (
@@ -130,12 +149,15 @@ export const Products = () => {
         handlePageClick={(pageNumber: number) => setPage(pageNumber)}
       />
 
-      {editProduct && (
+      {(editProduct || newProduct) && (editProduct || newProduct !== null) && (
         <Modal
-          product={editProduct}
+          product={editProduct || newProduct!}
           manufacturers={manufacturers}
           onSave={handleSaveProduct}
-          onClose={() => setEditProduct(null)}
+          onClose={() => {
+            setEditProduct(null)
+            setNewProduct(null)
+          }}
         />
       )}
     </div>

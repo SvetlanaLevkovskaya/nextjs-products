@@ -39,7 +39,7 @@ export const ProductTable: FC<ProductTableProps> = ({
         {products?.map((product) => (
           <tr key={product.id}>
             <td className={styles.imageContainer}>
-              {product.photoUrl ? (
+              {product.photoUrl && !product.image ? (
                 <Image
                   src={product.photoUrl}
                   alt={product.name}

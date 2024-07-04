@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import { ApiRoutes } from '@/lib/api/routes'
-import { FormData, Product } from '@/types'
+import { FormData, NewProduct, Product } from '@/types'
 
 export const handleApiError = (error: unknown): string => {
   if (axios.isAxiosError(error)) {
@@ -45,27 +45,33 @@ export const apiClientService = {
   getAllProducts: async (limit: number, page: number, query: string, token: string | null) => {
     return instanceAxios.get(ApiRoutes.products, {
       params: { _limit: limit, _page: page, q: query },
-      headers: { Authorization: `Token ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
     })
   },
   deleteProduct: async (productId: number, token: string | null) => {
     return instanceAxios.delete(`${ApiRoutes.products}/${productId}`, {
-      headers: { Authorization: `Token ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
     })
   },
   updateProduct: async (productId: number, updatedProduct: Product, token: string | null) => {
     return instanceAxios.patch(`${ApiRoutes.products}/${productId}`, updatedProduct, {
-      headers: { Authorization: `Token ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
     })
+  },
+  createProduct: async (product: NewProduct, token: string | null) => {
+    const response = await instanceAxios.post(`${ApiRoutes.products}`, product, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    return response.data
   },
   getAllManufacturers: async (token: string | null) => {
     return instanceAxios.get(ApiRoutes.manufacturers, {
-      headers: { Authorization: `Token ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
     })
   },
   getMe: async (token: string | null) => {
     return instanceAxios.get(ApiRoutes.me, {
-      headers: { Authorization: `Token ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
     })
   },
   login: async (data: FormData) => {

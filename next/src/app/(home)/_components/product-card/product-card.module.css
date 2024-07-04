@@ -1,0 +1,4 @@
+.noImageText {
+  @apply text-xs text-gray-500 text-center;
+}
+

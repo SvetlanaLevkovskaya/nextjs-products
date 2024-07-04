@@ -40,7 +40,7 @@
 }
 
 .noImageText {
-  @apply text-xs text-gray-500 text-center;
+  @apply text-sm text-gray-500 text-center;
 }
 
 .truncate {

@@ -5,6 +5,16 @@ export interface Product {
   manufacturerId: number
   photoUrl: string
   quantity: number
+  image: string
+}
+
+export interface NewProduct {
+  id?: number
+  name: string
+  price: number
+  manufacturerId: number
+  quantity: number
+  image: string
 }
 
 export interface Manufacturer {
