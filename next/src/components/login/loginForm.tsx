@@ -13,6 +13,7 @@ import { apiClientService } from '@/services/clientApi'
 
 import styles from './loginForm.module.css'
 
+import { AppRoutes } from '@/lib/api/routes'
 import { validationSchema } from '@/lib/utils/validationSchema'
 import { useAuth } from '@/providers/auth-provider'
 import { FormData } from '@/types'
@@ -42,7 +43,7 @@ export const LoginForm = () => {
       const response = await apiClientService.login({ email, password })
       const { token } = response.data
       login(token)
-      router.push('/')
+      router.push(AppRoutes.products)
     } catch (error) {
       setAuthError('Ошибка авторизации. Проверьте почту и пароль.')
     }

@@ -14,19 +14,6 @@
   @apply mb-4;
 }
 
-.imagePreviewContainer {
-  @apply flex items-center justify-between gap-2.5;
-}
-
-.imagePreview {
-  @apply max-w-14 max-h-14 cursor-pointer rounded-md;
-}
-
-.fileName {
-  @apply flex items-center gap-1.5;
-}
-
 .actions {
   @apply mt-4 flex justify-end gap-2.5;
 }
-

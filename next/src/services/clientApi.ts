@@ -74,6 +74,17 @@ export const apiClientService = {
       headers: { Authorization: `Bearer ${token}` },
     })
   },
+  getBreadcrumbs: async (token: string | null) => {
+    return instanceAxios.get(ApiRoutes.breadcrumbs, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  },
+
+  getRandomBreadcrumbs: async (token: string | null) => {
+    return instanceAxios.get(ApiRoutes.breadcrumbs, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  },
   login: async (data: FormData) => {
     return instanceAxios.post(ApiRoutes.login, data)
   },

@@ -5,6 +5,8 @@ import { FC, PropsWithChildren, createContext, useContext, useEffect, useState }
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
 
+import { AppRoutes } from '@/lib/api/routes'
+
 interface AuthContextType {
   authToken: string | null
   login: (token: string) => void
@@ -32,7 +34,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     if (token) {
       setAuthToken(token)
     } else {
-      router.push('/login')
+      router.push(AppRoutes.login)
     }
     setIsLoading(false)
   }, [router])
@@ -45,7 +47,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const logout = () => {
     Cookies.remove('authToken')
     setAuthToken(null)
-    router.push('/login')
+    router.push(AppRoutes.login)
   }
 
   return (
