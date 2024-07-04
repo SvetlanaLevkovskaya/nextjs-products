@@ -41,7 +41,7 @@ export const Products = () => {
   } = useManufacturers()
 
   useEffect(() => {
-    setLimit(calculateLimitPerPage(windowSize.width))
+    setLimit(calculateLimitPerPage(window.innerWidth))
   }, [windowSize.width])
 
   const handleEditProduct = (productId: number) => {
@@ -124,7 +124,7 @@ export const Products = () => {
           />
         )
       ) : (
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {loadingProducts || loadingManufacturers ? (
             <Spinner />
           ) : (

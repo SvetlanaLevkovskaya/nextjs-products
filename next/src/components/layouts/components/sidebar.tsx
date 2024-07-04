@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button/button'
 
 import useFetchUser from '@/hooks/useFetchUser'
 
-import styles from './Sidebar.module.css'
+import styles from './sidebar.module.css'
 
 import { ArrowLeft, ArrowLeftHidden, Logo, Logout } from '../../ui/icons'
 
@@ -28,26 +28,23 @@ export const Sidebar = () => {
 
   return (
     <div className={styles.sidebarContainer}>
-      <h1 className={styles.sidebarHeader}>
-        Test
-        <Logo />
-      </h1>
+      <button onClick={() => router.push(AppRoutes.products)}>
+        <h1 className={styles.sidebarHeader}>
+          Test
+          <Logo />
+        </h1>
+      </button>
+
       <ul className={styles.sidebarList}>
         <li className={styles.sidebarItem}>
-          <Button
-            onClick={() => router.push(AppRoutes.products)}
-            className="!p-0 w-full flex justify-between items-center !bg-slate-100"
-          >
+          <Button onClick={() => router.push(AppRoutes.products)} className={styles.btn}>
             <h3>Товары</h3>
             <ArrowLeftHidden />
           </Button>
           <ArrowLeftHidden />
         </li>
         <li className={clsx(styles.sidebarItem, 'transition group')}>
-          <Button
-            onClick={() => router.push(AppRoutes.algorithms)}
-            className="!p-0 w-full flex justify-between items-center !bg-slate-100"
-          >
+          <Button onClick={() => router.push(AppRoutes.algorithms)} className={styles.btn}>
             <h3>Алгоритмы</h3>
             <ArrowLeft />
           </Button>
@@ -60,8 +57,8 @@ export const Sidebar = () => {
               <span className={styles.roleBadge}>{getRoleName(user)}</span>
             </div>
             <div className={styles.userActions}>
-              <h6>{user.user.name}</h6>
-              <Button onClick={logout} className={styles.logoutButton}>
+              <h6 className="text-left">{user.user.name}</h6>
+              <Button onClick={logout} className="!p-0 !bg-slate-100">
                 <Logout />
               </Button>
             </div>

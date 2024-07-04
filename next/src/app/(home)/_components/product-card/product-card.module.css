@@ -1,3 +1,27 @@
-.noImageText {
-  @apply text-xs text-gray-500 text-center;
+.product-card {
+  @apply p-4 w-full flex flex-col;
+}
+
+.product-image-container {
+  @apply relative w-[224px] h-[224px] mb-2 bg-white rounded-[10px] flex items-center justify-center;
+}
+
+.product-image {
+  @apply rounded-[10px];
+}
+
+.no-image {
+  @apply text-2xl text-gray-500 text-center;
+}
+
+.product-name {
+  @apply text-center mb-2 max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis;
+}
+
+.manufacturer-name {
+  @apply text-sm text-center text-gray-500 mb-2 max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis;
+}
+
+.product-details {
+  @apply flex justify-between mt-auto;
 }
