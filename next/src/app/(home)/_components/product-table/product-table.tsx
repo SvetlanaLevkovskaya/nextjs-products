@@ -39,14 +39,13 @@ export const ProductTable: FC<ProductTableProps> = ({
         {products?.map((product) => (
           <tr key={product.id}>
             <td className={styles.imageContainer}>
-              {product.photoUrl && !product.image ? (
+              {product.photoUrl || product.image ? (
                 <Image
                   src={product.photoUrl}
                   alt={product.name}
                   width="56"
                   height="56"
                   className={styles.productImage}
-                  onError={(e) => (e.currentTarget.src = '/placeholder-image.png')}
                 />
               ) : (
                 <div className={styles.noImageText}>Нет фото</div>

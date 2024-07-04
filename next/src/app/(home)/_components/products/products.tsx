@@ -70,7 +70,7 @@ export const Products = () => {
           product as NewProduct,
           authToken
         )
-        setProducts((prevProducts) => [...prevProducts, createdProduct].slice(0, limit))
+        setProducts((prevProducts) => [createdProduct, ...prevProducts].slice(0, limit))
       }
       setEditProduct(null)
       setNewProduct(null)
@@ -84,7 +84,7 @@ export const Products = () => {
     setPage(1)
   }
 
-  const handleAddProduct = () =>
+  const handleAddProduct = () => {
     setNewProduct({
       name: '',
       quantity: 0,
@@ -92,6 +92,7 @@ export const Products = () => {
       manufacturerId: 0,
       image: '',
     })
+  }
 
   const handleSwitchView = (view: 'table' | 'cards') => setViewMode(view)
 
