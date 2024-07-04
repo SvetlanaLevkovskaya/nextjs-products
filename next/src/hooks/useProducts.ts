@@ -7,13 +7,9 @@ import { useDebounce } from '@/hooks/useDebounce'
 import { apiClientService } from '@/services/clientApi'
 
 import { useAuth } from '@/providers/auth-provider'
-import { NewProduct, Product } from '@/types'
+import { Product } from '@/types'
 
-export const useProducts = <T extends Product | NewProduct>(
-  limit: number,
-  page: number,
-  searchQuery: string
-) => {
+export const useProducts = (limit: number, page: number, searchQuery: string) => {
   const { authToken } = useAuth()
   const debouncedSearchValue = useDebounce(searchQuery)
   const [products, setProducts] = useState<Product[]>([])

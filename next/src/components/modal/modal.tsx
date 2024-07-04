@@ -1,10 +1,13 @@
-import { ChangeEvent, FC, FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { Controller, useForm } from 'react-hook-form'
 
 import Image from 'next/image'
 
 import { Button } from '@/components/ui/button/button'
 import { Input } from '@/components/ui/input/input'
+
+import { useClickOutside } from '@/hooks/useClickOutside'
 
 import styles from './modal.module.css'
 
@@ -18,33 +21,24 @@ interface EditProductModalProps {
 }
 
 export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSave, onClose }) => {
-  const [editedProduct, setEditedProduct] = useState<Product | NewProduct>({
-    ...product,
-  })
+  const { register, handleSubmit, control, setValue } = useForm<Product | NewProduct>()
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
 
   useEffect(() => {
-    setEditedProduct({ ...product })
+    setValue('name', product.name)
+    setValue('quantity', product.quantity)
+    setValue('price', product.price)
+    setValue('manufacturerId', product.manufacturerId)
     if ('photoUrl' in product) {
-      setImagePreview(product?.photoUrl || product?.image || null)
+      setImagePreview(product.photoUrl || product.image || null)
     }
     setSelectedFile(null)
-  }, [product])
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setEditedProduct((prevProduct) => ({
-      ...prevProduct,
-      [name]:
-        name === 'price' ? parseFloat(value) : name === 'manufacturerId' ? parseInt(value) : value,
-    }))
-  }
+  }, [product, setValue])
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null
     setSelectedFile(file)
-
     if (file) {
       const reader = new FileReader()
       reader.onloadend = () => {
@@ -56,14 +50,11 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
     }
   }
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
+  const onSubmit = (data: Product | NewProduct) => {
     const productToSave = {
-      ...editedProduct,
-      ...(editedProduct.id ? { photoUrl: imagePreview ?? '' } : { image: imagePreview ?? '' }),
+      ...data,
+      ...(data.id ? { photoUrl: imagePreview ?? '' } : { image: imagePreview ?? '' }),
     }
-
     onSave(productToSave)
   }
 
@@ -76,19 +67,35 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
     setImagePreview(null)
   }
 
+  const modalRef = useClickOutside({
+    handleClickOutside: onClose,
+  })
+
+  useEffect(() => {
+    const handleEscapeKey = (e: KeyboardEvent) => {
+      if (product && e.key === 'Escape') {
+        onClose()
+      }
+    }
+
+    document.body.addEventListener('keydown', handleEscapeKey)
+
+    return () => {
+      document.body.removeEventListener('keydown', handleEscapeKey)
+    }
+  }, [product])
+
   return createPortal(
     <div className={styles.overlay}>
-      <div className={styles.modal}>
+      <div ref={modalRef} className={styles.modal}>
         <h2>{product?.id ? 'Редактирование продукта' : 'Создание товара'}</h2>
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <div className={styles.formGroup}>
             <Input
               type="text"
               label="Название"
               id="name"
-              name="name"
-              value={editedProduct.name || ''}
-              onChange={handleChange}
+              register={register('name', { required: true })}
               className="w-full"
               required
             />
@@ -98,9 +105,7 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
               type="number"
               label="Количество"
               id="quantity"
-              name="quantity"
-              value={editedProduct.quantity?.toString() || ''}
-              onChange={handleChange}
+              register={register('quantity', { required: true })}
               className="w-full"
               required
             />
@@ -110,41 +115,42 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
               type="number"
               label="Цена"
               id="price"
-              name="price"
               step="0.01"
-              value={editedProduct.price?.toString() || ''}
-              onChange={handleChange}
+              register={register('price', { required: true })}
               className="w-full"
               required
             />
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="manufacturerId">Производитель</label>
-            <select
-              id="manufacturerId"
+            <Controller
               name="manufacturerId"
-              value={editedProduct.manufacturerId?.toString() || ''}
-              onChange={handleChange}
-              className="p-text bg-[#C9CFD8] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#C9CFD8] focus:bg-transparent outline-none"
-              required
-            >
-              <option value="">Выберите производителя</option>
-              {manufacturers?.map((manufacturer) => (
-                <option key={manufacturer.id} value={manufacturer.id}>
-                  {manufacturer.name}
-                </option>
-              ))}
-            </select>
+              control={control}
+              defaultValue={product.manufacturerId}
+              render={({ field }) => (
+                <select
+                  id="manufacturerId"
+                  {...field}
+                  className="p-text bg-[#C9CFD8] placeholder:text-[#888F99] pl-[10px] py-[6px] block w-full rounded-md border focus:border-[#C9CFD8] focus:bg-transparent outline-none"
+                  required
+                >
+                  <option value="">Выберите производителя</option>
+                  {manufacturers.map((manufacturer) => (
+                    <option key={manufacturer.id} value={manufacturer.id}>
+                      {manufacturer.name}
+                    </option>
+                  ))}
+                </select>
+              )}
+            />
           </div>
           <div className={styles.formGroup}>
             <Input
               type="file"
               label="Фото"
               id="photo"
-              name="photo"
               onChange={handleFileChange}
               className="hidden"
-              required
             />
             {imagePreview && (
               <div className={styles.imagePreviewContainer}>
