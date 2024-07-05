@@ -36,7 +36,7 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
   return createPortal(
     <div className={styles.overlay}>
       <div ref={modalRef} className={styles.modal}>
-        <h2>{product?.id ? 'Редактирование продукта' : 'Создание товара'}</h2>
+        <h2>{product?.id ? 'Редактирование товара' : 'Создание товара'}</h2>
         <form
           onSubmit={handleSubmit((data) => onSubmit(data, imagePreview))}
           className={styles.form}
@@ -53,7 +53,7 @@ export const Modal: FC<EditProductModalProps> = ({ product, manufacturers, onSav
               label="Фото"
               id="photo"
               onChange={handleFileChange}
-              className="hidden"
+              className={product?.id ? 'hidden' : ''}
             />
             <ImagePreview
               imagePreview={imagePreview}

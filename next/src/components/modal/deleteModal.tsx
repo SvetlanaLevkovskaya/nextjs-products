@@ -72,7 +72,6 @@ export const DeleteModal: FC<DeleteModalProps> = ({ product, manufacturer, onDel
     <div className={styles.overlay}>
       {!showConfirmation && (
         <div ref={modalRef} className={styles.modal}>
-          <h2 className="text-center mb-4">Удалить продукт</h2>
           <div className="flex justify-center items-center">
             <div className={styles.imageContainer}>
               {product.photoUrl && !product.image ? (
