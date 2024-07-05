@@ -17,3 +17,25 @@
 .actions {
   @apply mt-4 flex justify-end gap-2.5;
 }
+
+.imageContainer {
+  @apply relative w-[224px] h-[224px] mb-2 bg-white rounded-[10px] flex items-center justify-center;
+}
+
+.image {
+  @apply rounded-[10px];
+}
+
+.noImage {
+  @apply text-2xl text-gray-500 text-center;
+}
+
+.productName {
+  @apply text-center mb-3 ;
+}
+
+.manufacturerName {
+  @apply text-sm mb-3;
+}
+
+

@@ -2,6 +2,7 @@
 
 import { ChangeEvent, useEffect, useState } from 'react'
 
+import { DeleteModal } from '@/components/modal/deleteModal'
 import { Modal } from '@/components/modal/modal'
 import { Spinner } from '@/components/ui/Spinner/Spinner'
 
@@ -23,6 +24,7 @@ export const Products = () => {
   const [viewMode, setViewMode] = useState<'table' | 'cards'>('table')
   const [editProduct, setEditProduct] = useState<Product | null>(null)
   const [newProduct, setNewProduct] = useState<NewProduct | null>(null)
+  const [deleteProduct, setDeleteProduct] = useState<Product | null>(null)
   const [page, setPage] = useState(1)
   const windowSize = useWindowSize()
 
@@ -49,12 +51,24 @@ export const Products = () => {
     if (product) setEditProduct(product as Product)
   }
 
-  const handleDeleteProduct = async (productId: number) => {
-    try {
-      await apiClientService.deleteProduct(productId, authToken)
-      setProducts((prevProducts) => prevProducts.filter((product) => product.id !== productId))
-    } catch (error) {
-      console.error('Error deleting product:', error)
+  const handleDeleteProduct = (productId: number) => {
+    const product = products.find((p) => p.id === productId)
+    if (product) {
+      setDeleteProduct(product as Product)
+    }
+  }
+
+  const confirmDeleteProduct = async () => {
+    if (deleteProduct) {
+      try {
+        await apiClientService.deleteProduct(deleteProduct.id, authToken)
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product.id !== deleteProduct.id)
+        )
+        setDeleteProduct(null)
+      } catch (error) {
+        console.error('Error deleting product:', error)
+      }
     }
   }
 
@@ -159,6 +173,15 @@ export const Products = () => {
             setEditProduct(null)
             setNewProduct(null)
           }}
+        />
+      )}
+
+      {deleteProduct && (
+        <DeleteModal
+          product={deleteProduct}
+          manufacturer={manufacturers.find((m) => m.id === deleteProduct.manufacturerId)}
+          onDelete={confirmDeleteProduct}
+          onClose={() => setDeleteProduct(null)}
         />
       )}
     </div>
