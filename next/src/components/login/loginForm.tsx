@@ -6,6 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useRouter } from 'next/navigation'
 
+import { customToastSuccess } from '@/components/ui/CustomToast/CustomToast'
 import { Button } from '@/components/ui/button/button'
 import { Input } from '@/components/ui/input/input'
 
@@ -44,6 +45,7 @@ export const LoginForm = () => {
       const { token } = response.data
       login(token)
       router.push(AppRoutes.products)
+      customToastSuccess(`Пользователь ${email} залогинен`)
     } catch (error) {
       setAuthError('Ошибка авторизации. Проверьте почту и пароль.')
     }

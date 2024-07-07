@@ -4,6 +4,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 
 import { DeleteModal } from '@/components/modal/deleteModal'
 import { Modal } from '@/components/modal/modal'
+import { customToastError } from '@/components/ui/CustomToast/CustomToast'
 import { Spinner } from '@/components/ui/Spinner/Spinner'
 
 import { useManufacturers } from '@/hooks/useManufacturers'
@@ -67,7 +68,8 @@ export const Products = () => {
         )
         setDeleteProduct(null)
       } catch (error) {
-        console.error('Error deleting product:', error)
+        console.error('Ошибка при удалении продукта:', error)
+        customToastError(`Ошибка при удалении продукта: ${error}`)
       }
     }
   }
@@ -89,7 +91,8 @@ export const Products = () => {
       setEditProduct(null)
       setNewProduct(null)
     } catch (error) {
-      console.error('Error saving product:', error)
+      console.error('Ошибка при сохранении продукта:', error)
+      customToastError(`Ошибка при сохранении продукта: ${error}`)
     }
   }
 

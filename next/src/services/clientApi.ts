@@ -1,23 +1,25 @@
 import axios from 'axios'
 
+import { customToastError } from '@/components/ui/CustomToast/CustomToast'
+
 import { ApiRoutes } from '@/lib/api/routes'
 import { FormData, NewProduct, Product } from '@/types'
 
 export const handleApiError = (error: unknown): string => {
   if (axios.isAxiosError(error)) {
     if (error.response) {
-      console.error('Server Response Error:', error.response.data)
-      return `Ошибка: ${error.response.data.message || error.response.statusText}`
+      console.error(error.message)
+      return error.message || error.response.statusText
     } else if (error.request) {
-      console.error('No Response Error:', error.request)
-      return 'Ошибка: Сервер не отвечает'
+      console.error('No Response Error:', error.request.statusText)
+      return error.request.statusText
     }
   } else if (error instanceof Error) {
     console.error('Unknown Error:', error.message)
-    return `Ошибка: ${error.message}`
+    return error.message
   } else {
     console.error('Unexpected Error:', error)
-    return 'Произошла неизвестная ошибка'
+    return error as string
   }
   return 'Произошла неизвестная ошибка'
 }

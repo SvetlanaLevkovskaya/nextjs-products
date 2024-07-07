@@ -19,7 +19,6 @@ export const ImagePreview: FC<ImagePreviewProps> = ({
   handleImageClick,
   handleRemoveImage,
 }) => {
-  console.log('imagePreview', imagePreview)
   return (
     <>
       {imagePreview && (

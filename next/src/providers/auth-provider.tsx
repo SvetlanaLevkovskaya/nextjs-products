@@ -1,9 +1,20 @@
 'use client'
 
-import { FC, PropsWithChildren, createContext, useContext, useEffect, useState } from 'react'
+import {
+  FC,
+  PropsWithChildren,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/navigation'
+
+import { customToastError } from '@/components/ui/CustomToast/CustomToast'
 
 import { AppRoutes } from '@/lib/api/routes'
 
@@ -30,29 +41,47 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter()
 
   useEffect(() => {
-    const token = Cookies.get('authToken')
-    if (token) {
-      setAuthToken(token)
-    } else {
-      router.push(AppRoutes.login)
+    const initializeAuth = async () => {
+      const token = Cookies.get('authToken')
+      if (token) {
+        setAuthToken(token)
+      } else {
+        router.push(AppRoutes.login)
+      }
+      setIsLoading(false)
     }
-    setIsLoading(false)
+    initializeAuth()
   }, [router])
 
-  const login = (token: string) => {
+  const login = useCallback((token: string) => {
     Cookies.set('authToken', token)
     setAuthToken(token)
-  }
+  }, [])
 
-  const logout = () => {
-    Cookies.remove('authToken')
-    setAuthToken(null)
-    router.push(AppRoutes.login)
-  }
+  const logout = useCallback(() => {
+    try {
+      Cookies.remove('authToken')
+      setAuthToken(null)
+      router.push(AppRoutes.login)
+    } catch (error) {
+      console.error('Ошибка при выходе из системы:', error)
+      customToastError('Ошибка при выходе из системы. Попробуйте еще раз.')
+    }
+  }, [router])
 
-  return (
-    <AuthContext.Provider value={{ authToken, login, logout, isLoading }}>
-      {!isLoading && children}
-    </AuthContext.Provider>
+  const contextValue = useMemo(
+    () => ({
+      authToken,
+      login,
+      logout,
+      isLoading,
+    }),
+    [authToken, login, logout, isLoading]
   )
+
+  if (isLoading) {
+    return null
+  }
+
+  return <AuthContext.Provider value={contextValue}>{!isLoading && children}</AuthContext.Provider>
 }

@@ -3,6 +3,7 @@
 import clsx from 'clsx'
 import { useRouter } from 'next/navigation'
 
+import { customToastError, customToastSuccess } from '@/components/ui/CustomToast/CustomToast'
 import { Spinner } from '@/components/ui/Spinner/Spinner'
 import { Button } from '@/components/ui/button/button'
 
@@ -24,6 +25,11 @@ export const Sidebar = () => {
 
   if (error) {
     return <p>Произошла ошибка: {error}</p>
+  }
+
+  const handleLogout = async (user: string) => {
+    logout()
+    customToastSuccess(`Пользователь ${user} вышел из системы`)
   }
 
   return (
@@ -58,7 +64,7 @@ export const Sidebar = () => {
             </div>
             <div className={styles.userActions}>
               <h6 className="text-left">{user.user.name}</h6>
-              <Button onClick={logout} className="!p-0 !bg-slate-100">
+              <Button onClick={() => handleLogout(user.user.email)} className="!p-0 !bg-slate-100">
                 <Logout />
               </Button>
             </div>

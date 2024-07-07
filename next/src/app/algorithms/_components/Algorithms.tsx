@@ -1,10 +1,11 @@
 'use client'
 
-import { FC, useState } from 'react'
+import { useState } from 'react'
 
+import { customToastError } from '@/components/ui/CustomToast/CustomToast'
 import { Button } from '@/components/ui/button/button'
 
-import { apiClientService } from '@/services/clientApi'
+import { apiClientService, handleApiError } from '@/services/clientApi'
 
 import { useAuth } from '@/providers/auth-provider'
 
@@ -29,7 +30,7 @@ export const Algorithms = () => {
       const newBreadcrumb = randomBreadcrumb.name_ru
       setBreadcrumbs((prevBreadcrumbs) => [...prevBreadcrumbs, newBreadcrumb])
     } catch (error) {
-      console.error('Error fetching breadcrumbs:', error)
+      customToastError(`Ошибка при получении конечных точек: ${error}`)
     }
   }
 
